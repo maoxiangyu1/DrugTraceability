@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+    <Text Include="简介.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DrugTraceability.h">
