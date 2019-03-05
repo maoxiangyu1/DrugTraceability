@@ -37,6 +37,12 @@
     <ClInclude Include="Login.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Dongle_API.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Execption.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DrugTraceability.cpp">
@@ -49,6 +55,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Login.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Execption.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -66,5 +75,8 @@
     <Image Include="res\DrugTraceability.ico">
       <Filter>资源文件</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="lib\Dongle_s.lib" />
   </ItemGroup>
 </Project>

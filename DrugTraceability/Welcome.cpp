@@ -112,7 +112,7 @@ BOOL CWelcome::OnInitDialog()
 	file.Read(pBuf, iLen);
 	pBuf[iLen] = 0;
 	file.Close();
-	GetDlgItem(IDC_EDIT1)->SetWindowTextA(pBuf);
+	GetDlgItem(IDC_EDIT1)->SetWindowText(pBuf);
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 

@@ -69,6 +69,16 @@ BOOL CLogin::OnInitDialog()
 	HICON m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
+	//===========
+	hDongle = NULL;
+	int nCount;
+	int dwRet = Dongle_Enum(NULL, &nCount);//枚举锁的数量
+	if (dwRet != DONGLE_SUCCESS && nCount != 1)
+	{
+		GetDlgItem(IDC_STATICW)->SetWindowTextA("请插入USB身份校验！");
+		return TRUE;
+	}
+	
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }

@@ -37,7 +37,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -190,7 +190,9 @@
     <Text Include="简介.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Dongle_API.h" />
     <ClInclude Include="DrugTraceability.h" />
+    <ClInclude Include="Execption.h" />
     <ClInclude Include="Login.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -199,6 +201,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DrugTraceability.cpp" />
+    <ClCompile Include="Execption.cpp" />
     <ClCompile Include="Login.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -216,6 +219,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\DrugTraceability.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="lib\Dongle_s.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

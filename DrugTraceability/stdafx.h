@@ -37,7 +37,7 @@
 #include<dbt.h>
 #pragma   comment   (linker,"/NODEFAULTLIB:libc.lib")
 #pragma comment(lib, "legacy_stdio_definitions.lib")
-
+#include "Execption.h"
 
 
 

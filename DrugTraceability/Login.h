@@ -1,6 +1,6 @@
 #pragma once
 #include "Welcome.h"
-
+#include "Dongle_API.h"
 // CLogin 对话框
 
 class CLogin : public CDialogEx
@@ -8,6 +8,7 @@ class CLogin : public CDialogEx
 	DECLARE_DYNAMIC(CLogin)
 
 public:
+	DONGLE_HANDLE hDongle;
 	CWelcome *m_main;
 	CLogin(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CLogin();
