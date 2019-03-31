@@ -192,7 +192,6 @@
   <ItemGroup>
     <ClInclude Include="Dongle_API.h" />
     <ClInclude Include="DrugTraceability.h" />
-    <ClInclude Include="Execption.h" />
     <ClInclude Include="Login.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -201,7 +200,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DrugTraceability.cpp" />
-    <ClCompile Include="Execption.cpp" />
     <ClCompile Include="Login.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
