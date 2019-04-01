@@ -179,7 +179,6 @@ void CWelcome::OnBnClickedStart()
 	// TODO: 在此添加控件通知处理程序代码
 	this->ShowWindow(SW_HIDE);
 	CLogin dlg;
-	dlg.m_main = this;
 	dlg.DoModal();
-	dlg.m_main->OnCancel();
+	OnCancel();
 }

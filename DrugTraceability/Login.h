@@ -8,8 +8,9 @@ class CLogin : public CDialogEx
 	DECLARE_DYNAMIC(CLogin)
 
 public:
+	CString HID;
 	DONGLE_HANDLE hDongle;
-	CWelcome *m_main;
+	DONGLE_INFO *pDongleInfo;
 	CLogin(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CLogin();
 
@@ -28,4 +29,6 @@ protected:
 	DECLARE_INTERFACE_MAP()
 public:
 	virtual BOOL OnInitDialog();
+	afx_msg void OnBnClickedButton1();
+	afx_msg void OnBnClickedButton2();
 };

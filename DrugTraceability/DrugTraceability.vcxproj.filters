@@ -40,6 +40,24 @@
     <ClInclude Include="Dongle_API.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Admin.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Producer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Transfer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Drugstore.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Firm.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Drug.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DrugTraceability.cpp">
@@ -52,6 +70,24 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Login.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Admin.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Producer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Transfer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Drugstore.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Firm.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Drug.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
