@@ -90,7 +90,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
@@ -195,7 +195,6 @@
     <ClInclude Include="Drug.h" />
     <ClInclude Include="Drugstore.h" />
     <ClInclude Include="DrugTraceability.h" />
-    <ClInclude Include="Firm.h" />
     <ClInclude Include="Login.h" />
     <ClInclude Include="Producer.h" />
     <ClInclude Include="Resource.h" />
@@ -209,7 +208,6 @@
     <ClCompile Include="Drug.cpp" />
     <ClCompile Include="Drugstore.cpp" />
     <ClCompile Include="DrugTraceability.cpp" />
-    <ClCompile Include="Firm.cpp" />
     <ClCompile Include="Login.cpp" />
     <ClCompile Include="Producer.cpp" />
     <ClCompile Include="stdafx.cpp">

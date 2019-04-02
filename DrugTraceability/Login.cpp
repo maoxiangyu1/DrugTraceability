@@ -15,6 +15,7 @@ IMPLEMENT_DYNAMIC(CLogin, CDialogEx)
 
 CLogin::CLogin(CWnd* pParent /*=NULL*/)
 	: CDialogEx(IDD_LOGIN_DIALOG, pParent)
+	, Info(_T(""))
 {
 
 	EnableAutomation();
@@ -38,6 +39,7 @@ void CLogin::OnFinalRelease()
 void CLogin::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Text(pDX, IDC_EDIT1, Info);
 }
 
 
@@ -79,36 +81,72 @@ BOOL CLogin::OnInitDialog()
 	int dwRet = Dongle_Enum(NULL, &nCount);//枚举锁的数量
 	if (dwRet != DONGLE_SUCCESS && nCount != 1)
 	{
-		GetDlgItem(IDC_STATICW)->SetWindowTextA("请插入USB身份校验！");
+		GetDlgItem(IDC_STATICW)->SetWindowTextA("未检测到USB身份验证！");
 		GetDlgItem(IDC_BUTTON1)->SetWindowTextA("重试");
 		return TRUE;
-	} 
-
+	}
 	//显示身份信息============
 	pDongleInfo = (DONGLE_INFO *)malloc(sizeof(DONGLE_INFO));
 	dwRet = Dongle_Enum(pDongleInfo, &nCount);//获取加密锁的相关信息
-	if (pDongleInfo->m_UserID == 0xFFFFFFFF)    //药监局
+	if (pDongleInfo->m_UserID != 0xFFFFFFFF //药监局
+		&& pDongleInfo->m_UserID == 0x11111111 //生产商
+		&& pDongleInfo->m_UserID == 0x22222222  //中转站
+		&& pDongleInfo->m_UserID == 0x33333333)     //药店
 	{
-		GetDlgItem(IDC_BUTTON1)->SetWindowTextA("登入");
+		AfxMessageBox("无确定您的身份信息！");
 		return TRUE;
 	}
-	if (pDongleInfo->m_UserID == 0x11111111)    //生产商
+	GetDlgItem(IDC_BUTTON1)->SetWindowTextA("登入");
+	dwRet = Dongle_Open(&hDongle, 0);//打开第1把锁
+	/*
+	strcpy(firm.Address, "anhuisheng");
+	firm.StartTime = GetCurrentTime();
+	firm.Deadline = 12;
+	strcpy(firm.FirmID , "122334345");
+	firm.FirmType = 1;
+	strcpy(firm.Info ,"3erwtrewtheroiutyhieruytiuerytiuyeriut");
+	strcpy(firm.LeaderName , "毛翔宇");
+	strcpy(firm.Name ,"安徽制药公司");
+	strcpy(firm.Tel , "18943384416");
+	size = sizeof(firm);
+	memcpy(sizebyte, &size, 4);
+	memcpy(buffer, &firm, sizeof(firm));
+	dwRet = Dongle_WriteData(hDongle, 0, sizebyte, 4);
+	dwRet = Dongle_WriteData(hDongle, 4, buffer, 4076);*/
+	
+	dwRet = Dongle_ReadData(hDongle, 0, sizebyte, 4);
+	dwRet = Dongle_ReadData(hDongle, 4, buffer, 4076);
+	dwRet = Dongle_ReadData(hDongle, 4080, pHashMD5, 16);
+
+	//dwRet = Dongle_HASH(hDongle, FLAG_HASH_MD5, buffer, 4076, pHashMD5);
+	//dwRet = Dongle_WriteData(hDongle, 4080, pHashMD5, 16);
+
+	memcpy(&size, sizebyte, 4);
+	memcpy(&firm, buffer, size);
+	s.Format("%d-%d-%d", firm.StartTime.GetYear(), firm.StartTime.GetMonth(), firm.StartTime.GetDay());
+	
+	switch (firm.FirmType)
 	{
-		GetDlgItem(IDC_BUTTON1)->SetWindowTextA("登入");
-		return TRUE;
+	case 1:
+		FType = "药监局";
+		break;
+	case 2:
+		FType = "生产商";
+		break;
+	case 3:
+		FType = "中转站";
+		break;
+	case 4:
+		FType = "药店";
+		break;
+	default:
+		FType = "未知类型";
+		break;
 	}
-	if (pDongleInfo->m_UserID == 0x22222222)   //中转站
-	{
-		GetDlgItem(IDC_BUTTON1)->SetWindowTextA("登入");
-		return TRUE;
-	}
-	if (pDongleInfo->m_UserID == 0x33333333)    //药店
-	{
-		GetDlgItem(IDC_BUTTON1)->SetWindowTextA("登入");
-		return TRUE;
-	}
-	AfxMessageBox("无确定您的身份信息！");
-	//=========
+	Info.Format("公司ID：%s\r\n\r\n公司名称：%s\r\n\r\n公司类型：%s\r\n\r\n公司负责人：%s\r\n\r\n公司电话：%s\r\n\r\n公司地址：%s\r\n\r\n公司注册日期：%s\r\n\r\n公司有效期：%d个月\r\n\r\n公司简介：%s"
+			,firm.FirmID, firm.Name,FType,firm.LeaderName,firm.Tel,firm.Address,s,firm.Deadline,firm.Info);
+	GetDlgItem(IDC_STATICW)->SetWindowTextA("读取身份信息成功！");
+	UpdateData(FALSE);            
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
@@ -127,36 +165,51 @@ void CLogin::OnBnClickedButton1() //登录按钮
 	{
 		OnInitDialog();
 		UpdateWindow();
-		GetDlgItem(IDC_STATICW)->SetWindowTextA("未检测到USB！");
 		return;
+	}
+	BYTE temp[16];
+	int dwRet = Dongle_HASH(hDongle, FLAG_HASH_MD5, buffer, 4076, temp);
+	for (int i = 0; i < 16; i++)
+	{
+		if (temp[i] != pHashMD5[i])
+		{
+			AfxMessageBox("您的身份信息已被恶意更改！");
+			GetDlgItem(IDC_BUTTON1)->SetWindowTextA("重试");
+			return;
+		}
+
 	}
 	if (pDongleInfo->m_UserID == 0xFFFFFFFF) //药监局
 	{
 		CAdmin Dlg;
 		Dlg.m_main = this;
+		ShowWindow(SW_HIDE);
 		Dlg.DoModal();
-		return;
+		OnCancel();
 	}
 	if (pDongleInfo->m_UserID == 0x11111111) //生产商
 	{
 		CProducer Dlg;
 		Dlg.m_main = this;
+		ShowWindow(SW_HIDE);
 		Dlg.DoModal();
-		return;
+		OnCancel();
 	}
 	if (pDongleInfo->m_UserID == 0x22222222) //中转站
 	{
 		CTransfer Dlg;
 		Dlg.m_main = this;
+		ShowWindow(SW_HIDE);
 		Dlg.DoModal();
-		return;
+		OnCancel();
 	}
 	if (pDongleInfo->m_UserID == 0x33333333) //药店
 	{
 		CDrugstore Dlg;
 		Dlg.m_main = this;
+		ShowWindow(SW_HIDE);
 		Dlg.DoModal();
-		return;
+		OnCancel();
 	}
 	// TODO: 在此添加控件通知处理程序代码
 }

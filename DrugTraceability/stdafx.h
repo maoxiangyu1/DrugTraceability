@@ -39,7 +39,18 @@
 #pragma comment(lib, "legacy_stdio_definitions.lib")
 
 
-
+struct Firm
+{
+	char FirmID[16]; //公司ID
+	char Name[30];    //名称
+	char Address[60]; //地址
+	char LeaderName[20]; //领导人
+	char Info[200]; //公司简介
+	char Tel[11];//电话
+	CTime StartTime; //注册日期
+	int Deadline; //有效期	
+	int FirmType;   //公司类型  1-药监局 2-生产商 3-中转站 4-药店
+};
 
 
 #ifdef _UNICODE

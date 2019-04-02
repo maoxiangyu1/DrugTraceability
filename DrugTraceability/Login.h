@@ -1,6 +1,7 @@
 #pragma once
 #include "Welcome.h"
 #include "Dongle_API.h"
+
 // CLogin ¶Ô»°¿ò
 
 class CLogin : public CDialogEx
@@ -8,6 +9,12 @@ class CLogin : public CDialogEx
 	DECLARE_DYNAMIC(CLogin)
 
 public:
+	CString FType;
+	int size;
+	BYTE sizebyte[4];
+	BYTE buffer[4076];
+	BYTE pHashMD5[16];
+	Firm firm;
 	CString HID;
 	DONGLE_HANDLE hDongle;
 	DONGLE_INFO *pDongleInfo;
@@ -31,4 +38,5 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedButton1();
 	afx_msg void OnBnClickedButton2();
+	CString Info;
 };

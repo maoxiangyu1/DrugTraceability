@@ -1,7 +1,6 @@
 #pragma once
-class CDrug
+struct druginfo
 {
-public:
 	char DrugID[11];//药品ID
 	char Name[20];//名称
 	char Component[40];//成分
@@ -9,6 +8,11 @@ public:
 	char Effect[60];//药效
 	CTime StartTime;//生产日期
 	CTime EndTime;//过期日期
+};
+class CDrug
+{
+public:
+	struct druginfo drug;
 	BOOL Register(char DrugID, char Name, char Component, char HowEat[40], char Effect, CTime StartTime, CTime EndTime);
 	BOOL WriteOff(char DrugID);
 	CDrug();
