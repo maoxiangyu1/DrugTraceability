@@ -75,6 +75,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Program Files (x86)\MySQL\MySQL Server 5.5\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -193,8 +194,12 @@
     <ClInclude Include="Admin.h" />
     <ClInclude Include="Dongle_API.h" />
     <ClInclude Include="Drug.h" />
+    <ClInclude Include="DrugRegister.h" />
+    <ClInclude Include="DrugSearch.h" />
     <ClInclude Include="Drugstore.h" />
     <ClInclude Include="DrugTraceability.h" />
+    <ClInclude Include="FirmRegister.h" />
+    <ClInclude Include="FirmSearch.h" />
     <ClInclude Include="Login.h" />
     <ClInclude Include="Producer.h" />
     <ClInclude Include="Resource.h" />
@@ -206,8 +211,12 @@
   <ItemGroup>
     <ClCompile Include="Admin.cpp" />
     <ClCompile Include="Drug.cpp" />
+    <ClCompile Include="DrugRegister.cpp" />
+    <ClCompile Include="DrugSearch.cpp" />
     <ClCompile Include="Drugstore.cpp" />
     <ClCompile Include="DrugTraceability.cpp" />
+    <ClCompile Include="FirmRegister.cpp" />
+    <ClCompile Include="FirmSearch.cpp" />
     <ClCompile Include="Login.cpp" />
     <ClCompile Include="Producer.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -230,6 +239,7 @@
   </ItemGroup>
   <ItemGroup>
     <Library Include="lib\Dongle_s.lib" />
+    <Library Include="lib\libmysql.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

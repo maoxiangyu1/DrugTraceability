@@ -25,4 +25,11 @@ protected:
 	DECLARE_MESSAGE_MAP()
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
+public:
+	virtual BOOL OnInitDialog();
+	afx_msg void OnBnClickedRegsiterfirm();
+	afx_msg void OnBnClickedRegsiterdrug();
+	afx_msg void OnBnClickedSearchfirm();
+	afx_msg void OnBnClickedSearchdrug();
+	afx_msg void OnBnClickedCancel();
 };

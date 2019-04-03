@@ -46,6 +46,7 @@ void CLogin::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CLogin, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1, &CLogin::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &CLogin::OnBnClickedButton2)
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CLogin, CDialogEx)
@@ -70,6 +71,7 @@ END_INTERFACE_MAP()
 BOOL CLogin::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
+	pDongleInfo = (DONGLE_INFO *)malloc(sizeof(DONGLE_INFO));
 	// TODO:  在此添加额外的初始化
 	CString s;
 	HICON m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -79,22 +81,36 @@ BOOL CLogin::OnInitDialog()
 	hDongle = NULL;
 	int nCount;
 	int dwRet = Dongle_Enum(NULL, &nCount);//枚举锁的数量
-	if (dwRet != DONGLE_SUCCESS && nCount != 1)
+	if (dwRet != DONGLE_SUCCESS || nCount != 1)
 	{
-		GetDlgItem(IDC_STATICW)->SetWindowTextA("未检测到USB身份验证！");
-		GetDlgItem(IDC_BUTTON1)->SetWindowTextA("重试");
-		return TRUE;
+		if(nCount == 0)
+		{
+			GetDlgItem(IDC_STATICW)->SetWindowTextA("未检测到USB身份验证！");
+			GetDlgItem(IDC_BUTTON1)->SetWindowTextA("重试");
+			return TRUE;
+		}
+		if (nCount > 1)
+		{
+			GetDlgItem(IDC_STATICW)->SetWindowTextA("只能插入一个USB身份！");
+			GetDlgItem(IDC_BUTTON1)->SetWindowTextA("重试");
+			return TRUE;
+		}	
 	}
 	//显示身份信息============
-	pDongleInfo = (DONGLE_INFO *)malloc(sizeof(DONGLE_INFO));
+	
 	dwRet = Dongle_Enum(pDongleInfo, &nCount);//获取加密锁的相关信息
-	if (pDongleInfo->m_UserID != 0xFFFFFFFF //药监局
+	/*if (pDongleInfo->m_UserID != 0x00000000 //药监局
 		&& pDongleInfo->m_UserID == 0x11111111 //生产商
 		&& pDongleInfo->m_UserID == 0x22222222  //中转站
 		&& pDongleInfo->m_UserID == 0x33333333)     //药店
 	{
 		AfxMessageBox("无确定您的身份信息！");
 		return TRUE;
+	}*/
+	for (int i = 0; i < 8; i++)
+	{
+		s.Format("%02X", pDongleInfo->m_HID[i]);
+		HID = HID + s;
 	}
 	GetDlgItem(IDC_BUTTON1)->SetWindowTextA("登入");
 	dwRet = Dongle_Open(&hDongle, 0);//打开第1把锁
@@ -123,7 +139,7 @@ BOOL CLogin::OnInitDialog()
 
 	memcpy(&size, sizebyte, 4);
 	memcpy(&firm, buffer, size);
-	s.Format("%d-%d-%d", firm.StartTime.GetYear(), firm.StartTime.GetMonth(), firm.StartTime.GetDay());
+	//s.Format("%d-%d-%d", firm.StartTime.GetYear(), firm.StartTime.GetMonth(), firm.StartTime.GetDay());
 	
 	switch (firm.FirmType)
 	{
@@ -144,7 +160,7 @@ BOOL CLogin::OnInitDialog()
 		break;
 	}
 	Info.Format("公司ID：%s\r\n\r\n公司名称：%s\r\n\r\n公司类型：%s\r\n\r\n公司负责人：%s\r\n\r\n公司电话：%s\r\n\r\n公司地址：%s\r\n\r\n公司注册日期：%s\r\n\r\n公司有效期：%d个月\r\n\r\n公司简介：%s"
-			,firm.FirmID, firm.Name,FType,firm.LeaderName,firm.Tel,firm.Address,s,firm.Deadline,firm.Info);
+			,firm.FirmID, firm.Name,FType,firm.LeaderName,firm.Tel,firm.Address,firm.StartTime,firm.Deadline,firm.Info);
 	GetDlgItem(IDC_STATICW)->SetWindowTextA("读取身份信息成功！");
 	UpdateData(FALSE);            
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -179,13 +195,14 @@ void CLogin::OnBnClickedButton1() //登录按钮
 		}
 
 	}
-	if (pDongleInfo->m_UserID == 0xFFFFFFFF) //药监局
+	if (pDongleInfo->m_UserID == 0x00000000) //药监局
 	{
 		CAdmin Dlg;
 		Dlg.m_main = this;
 		ShowWindow(SW_HIDE);
 		Dlg.DoModal();
 		OnCancel();
+		return;
 	}
 	if (pDongleInfo->m_UserID == 0x11111111) //生产商
 	{
@@ -194,6 +211,7 @@ void CLogin::OnBnClickedButton1() //登录按钮
 		ShowWindow(SW_HIDE);
 		Dlg.DoModal();
 		OnCancel();
+		return;
 	}
 	if (pDongleInfo->m_UserID == 0x22222222) //中转站
 	{
@@ -202,6 +220,7 @@ void CLogin::OnBnClickedButton1() //登录按钮
 		ShowWindow(SW_HIDE);
 		Dlg.DoModal();
 		OnCancel();
+		return;
 	}
 	if (pDongleInfo->m_UserID == 0x33333333) //药店
 	{
@@ -210,6 +229,15 @@ void CLogin::OnBnClickedButton1() //登录按钮
 		ShowWindow(SW_HIDE);
 		Dlg.DoModal();
 		OnCancel();
+		return;
 	}
+	AfxMessageBox("无确定您的身份信息！");
 	// TODO: 在此添加控件通知处理程序代码
+}
+
+void CLogin::OnDestroy()
+{
+	CDialogEx::OnDestroy();
+	free(pDongleInfo);
+	// TODO: 在此处添加消息处理程序代码
 }

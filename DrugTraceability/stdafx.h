@@ -41,17 +41,19 @@
 
 struct Firm
 {
-	char FirmID[16]; //公司ID
+	char FirmID[17]; //公司ID
 	char Name[30];    //名称
 	char Address[60]; //地址
 	char LeaderName[20]; //领导人
 	char Info[200]; //公司简介
-	char Tel[11];//电话
-	CTime StartTime; //注册日期
+	char Tel[12];//电话
+	char StartTime[11]; //注册日期
 	int Deadline; //有效期	
 	int FirmType;   //公司类型  1-药监局 2-生产商 3-中转站 4-药店
 };
 
+#include "winsock.h" 
+#include "mysql.h" 
 
 #ifdef _UNICODE
 #if defined _M_IX86

@@ -5,8 +5,10 @@
 #include "DrugTraceability.h"
 #include "Admin.h"
 #include "afxdialogex.h"
-
-
+#include "FirmRegister.h"
+#include "DrugSearch.h"
+#include "FirmSearch.h"
+#include "DrugRegister.h"
 // CAdmin 对话框
 
 IMPLEMENT_DYNAMIC(CAdmin, CDialogEx)
@@ -43,6 +45,11 @@ void CAdmin::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CAdmin, CDialogEx)
+	ON_BN_CLICKED(IDREGSITERFIRM, &CAdmin::OnBnClickedRegsiterfirm)
+	ON_BN_CLICKED(IDREGSITERDRUG, &CAdmin::OnBnClickedRegsiterdrug)
+	ON_BN_CLICKED(IDSEARCHFIRM, &CAdmin::OnBnClickedSearchfirm)
+	ON_BN_CLICKED(IDSEARCHDRUG, &CAdmin::OnBnClickedSearchdrug)
+	ON_BN_CLICKED(IDCANCEL, &CAdmin::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CAdmin, CDialogEx)
@@ -62,3 +69,60 @@ END_INTERFACE_MAP()
 
 
 // CAdmin 消息处理程序
+
+
+BOOL CAdmin::OnInitDialog()
+{
+	CDialogEx::OnInitDialog();
+	HICON m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	SetIcon(m_hIcon, TRUE);			// 设置大图标
+	SetIcon(m_hIcon, FALSE);		// 设置小图标
+	// TODO:  在此添加额外的初始化
+
+	return TRUE;  // return TRUE unless you set the focus to a control
+				  // 异常: OCX 属性页应返回 FALSE
+}
+
+
+void CAdmin::OnBnClickedRegsiterfirm()//注册公司
+{
+	CFirmRegister dlg;
+	dlg.m_admin = this;
+	//ShowWindow(SW_HIDE);
+	dlg.DoModal();
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CAdmin::OnBnClickedRegsiterdrug()//注册药品
+{
+	CDrugRegister dlg;
+	dlg.m_admin = this;
+	dlg.DoModal();
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CAdmin::OnBnClickedSearchfirm()//查询公司
+{
+	CFirmSearch dlg;
+	dlg.m_admin = this;
+	dlg.DoModal();
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CAdmin::OnBnClickedSearchdrug()//查询药品
+{
+	CDrugSearch dlg;
+	dlg.m_admin = this;
+	dlg.DoModal();
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CAdmin::OnBnClickedCancel()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CDialogEx::OnCancel();
+}
