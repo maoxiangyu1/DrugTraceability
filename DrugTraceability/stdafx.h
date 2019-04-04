@@ -37,7 +37,8 @@
 #include<dbt.h>
 #pragma   comment   (linker,"/NODEFAULTLIB:libc.lib")
 #pragma comment(lib, "legacy_stdio_definitions.lib")
-
+#import "C:\Program Files\Common Files\System\ADO\msado15.dll" \
+no_namespace  rename("EOF", "adoEOF"),rename("BOF","adoBOF")
 
 struct Firm
 {
@@ -51,10 +52,17 @@ struct Firm
 	int Deadline; //有效期	
 	int FirmType;   //公司类型  1-药监局 2-生产商 3-中转站 4-药店
 };
-
-#include "winsock.h" 
-#include "mysql.h" 
-
+struct Drug
+{
+	char DrugID[11];//药品ID
+	char Name[20];//名称
+	char Component[40];//成分
+	char HowEat[40];//使用方法
+	char Effect[60];//药效
+	char StartTime[11];//生产日期
+	char Info[200]; //简述
+	int Deadline;//过期日期
+};
 #ifdef _UNICODE
 #if defined _M_IX86
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='x86' publicKeyToken='6595b64144ccf1df' language='*'\"")

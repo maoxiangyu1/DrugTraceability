@@ -12,7 +12,7 @@
 IMPLEMENT_DYNAMIC(CDrugRegister, CDialogEx)
 
 CDrugRegister::CDrugRegister(CWnd* pParent /*=NULL*/)
-	: CDialogEx(IDD_DURGREGISTER_DIALOG, pParent)
+	: CDialogEx(IDD_REGISTERDURG_DIALOG, pParent)
 {
 #ifndef _WIN32_WCE
 	EnableActiveAccessibility();
@@ -52,9 +52,9 @@ END_DISPATCH_MAP()
 //  以支持来自 VBA 的类型安全绑定。  此 IID 必须同附加到 .IDL 文件中的
 //  调度接口的 GUID 匹配。
 
-// {CDEFBA67-E47D-4CBD-8042-E712C4AB4DE1}
+// {D569E1A0-D48F-48FE-B4CA-06961C8F9CAC}
 static const IID IID_IDrugRegister =
-{ 0xCDEFBA67, 0xE47D, 0x4CBD, { 0x80, 0x42, 0xE7, 0x12, 0xC4, 0xAB, 0x4D, 0xE1 } };
+{ 0xD569E1A0, 0xD48F, 0x48FE, { 0xB4, 0xCA, 0x6, 0x96, 0x1C, 0x8F, 0x9C, 0xAC } };
 
 BEGIN_INTERFACE_MAP(CDrugRegister, CDialogEx)
 	INTERFACE_PART(CDrugRegister, IID_IDrugRegister, Dispatch)

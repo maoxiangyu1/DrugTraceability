@@ -90,7 +90,7 @@ void CFirmRegister::OnBnClickedOk()//注册
 	if (Name == "" || LeaderName == "" || Address == "" || Tel == "" || Info == "" || Type == ""||Deadline==0)
 	{
 		AfxMessageBox("公司信息不完整！");
-		//return;
+		return;
 	}
 	CString s;
 	DONGLE_HANDLE hDongle;
@@ -103,15 +103,16 @@ void CFirmRegister::OnBnClickedOk()//注册
 		AfxMessageBox("连接待写入设备失败！");
 		return;
 	}	
-	dwRet[0] = Dongle_Open(&hDongle, 0);
+	dwRet[0] = Dongle_Open(&hDongle, 1);
 	if (hDongle == m_admin->m_main->hDongle)
 	{
-		dwRet[0] = Dongle_Open(&hDongle, 1);
+		dwRet[0] = Dongle_Open(&hDongle, 0);
 	}
 	int p = 255;
 	if (Dongle_VerifyPIN(hDongle, FLAG_ADMINPIN, AdminPin, &p) != DONGLE_SUCCESS)
 	{
 		AfxMessageBox("待写入设备无法识别！");
+		return;
 	}
 	pDongleInfo = (DONGLE_INFO *)malloc(nCount * sizeof(DONGLE_INFO));
 	dwRet[0] = Dongle_Enum(pDongleInfo, &nCount);
@@ -142,7 +143,7 @@ void CFirmRegister::OnBnClickedOk()//注册
 	
 	for (int i = 0; i < 8; i++)
 	{
-		s.Format("%02X", pDongleInfo[0].m_HID[i]);
+		s.Format("%02X", pDongleInfo[1].m_HID[i]);
 		HID = HID + s;
 	}
 	if (HID == m_admin->m_main->HID)
@@ -150,7 +151,7 @@ void CFirmRegister::OnBnClickedOk()//注册
 		HID = "";
 		for (int i = 0; i < 8; i++)
 		{
-			s.Format("%02X", pDongleInfo[1].m_HID[i]);
+			s.Format("%02X", pDongleInfo[0].m_HID[i]);
 			HID = HID + s;
 		}
 	}
@@ -182,16 +183,13 @@ void CFirmRegister::OnBnClickedOk()//注册
 	CString sql;
 	sql.Format("insert into Firm values('%s','%s','%s','%s','%s','%s','%s',%d,%d);"
 		, firm.FirmID, Name, Address, LeaderName, Info, firm.Tel,firm.StartTime, firm.Deadline, firm.FirmType);
-	if (TRUE != mysql_query(Mysql, sql))
+	if (pDB->Execute(sql) != TRUE)
 	{
-
-		GetDlgItem(IDC_STATIC23)->SetWindowText("写入数据库信息失败！");
 		AfxMessageBox("公司注册失败！");
 		return;
 	}
-	
 	AfxMessageBox("公司注册成功！");
-	//CDialogEx::OnOK();
+	CDialogEx::OnOK();
 }
 
 
@@ -202,14 +200,15 @@ BOOL CFirmRegister::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 	// TODO:  在此添加额外的初始化
-	Mysql = new MYSQL;
-	mysql_init(Mysql);
-	if (mysql_real_connect(Mysql, NULL, "root", "213011", "drugtraceability", 0, NULL, 0) == NULL)
+	CString s;
+	s = "File Name=linkDB.udl";
+	pDB = new CADODatabase;
+	if (!pDB->Open(s))
 	{
-		AfxMessageBox("数据库连接失败！");
-		OnCancel();
+		AfxMessageBox("数据库链接失败！单击退出！");
+		this->EndDialog(0);
+		return TRUE;
 	}
-	mysql_options(Mysql, MYSQL_SET_CHARSET_NAME, "UTF-8");
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
@@ -218,8 +217,8 @@ BOOL CFirmRegister::OnInitDialog()
 void CFirmRegister::OnDestroy()
 {
 	CDialogEx::OnDestroy();
-	mysql_close(Mysql);
+	pDB->Close();
+	free(pDB);
 	free(pDongleInfo);
-	delete(Mysql);
 	// TODO: 在此处添加消息处理程序代码
 }

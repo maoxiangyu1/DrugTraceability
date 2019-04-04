@@ -91,7 +91,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
@@ -192,8 +192,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Admin.h" />
+    <ClInclude Include="ado.h" />
     <ClInclude Include="Dongle_API.h" />
-    <ClInclude Include="Drug.h" />
     <ClInclude Include="DrugRegister.h" />
     <ClInclude Include="DrugSearch.h" />
     <ClInclude Include="Drugstore.h" />
@@ -210,7 +210,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Admin.cpp" />
-    <ClCompile Include="Drug.cpp" />
+    <ClCompile Include="ado.cpp" />
     <ClCompile Include="DrugRegister.cpp" />
     <ClCompile Include="DrugSearch.cpp" />
     <ClCompile Include="Drugstore.cpp" />
@@ -238,8 +238,7 @@
     <Image Include="res\DrugTraceability.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="lib\Dongle_s.lib" />
-    <Library Include="lib\libmysql.lib" />
+    <Library Include="Dongle_s.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,6 +1,6 @@
 #pragma once
 #include "Admin.h"
-
+#include "ado.h"
 // CFirmRegister 对话框
 
 class CFirmRegister : public CDialogEx
@@ -8,6 +8,7 @@ class CFirmRegister : public CDialogEx
 	DECLARE_DYNAMIC(CFirmRegister)
 
 public:
+	CADODatabase * pDB;
 	CAdmin *m_admin;
 	CFirmRegister(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CFirmRegister();
@@ -26,7 +27,6 @@ protected:
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
 public:
-	MYSQL *Mysql;
 	DONGLE_INFO *pDongleInfo;
 	CString Name;
 	CString LeaderName;

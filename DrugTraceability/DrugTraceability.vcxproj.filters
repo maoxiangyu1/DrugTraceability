@@ -52,9 +52,6 @@
     <ClInclude Include="Drugstore.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Drug.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="FirmRegister.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -62,6 +59,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="FirmSearch.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ado.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="DrugRegister.h">
@@ -90,9 +90,6 @@
     <ClCompile Include="Drugstore.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Drug.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Login.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -103,6 +100,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FirmSearch.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ado.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="DrugRegister.cpp">
@@ -125,7 +125,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="lib\Dongle_s.lib" />
-    <Library Include="lib\libmysql.lib" />
+    <Library Include="Dongle_s.lib" />
   </ItemGroup>
 </Project>
