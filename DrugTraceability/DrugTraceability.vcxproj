@@ -195,11 +195,10 @@
     <ClInclude Include="ado.h" />
     <ClInclude Include="Dongle_API.h" />
     <ClInclude Include="DrugRegister.h" />
-    <ClInclude Include="DrugSearch.h" />
     <ClInclude Include="Drugstore.h" />
     <ClInclude Include="DrugTraceability.h" />
     <ClInclude Include="FirmRegister.h" />
-    <ClInclude Include="FirmSearch.h" />
+    <ClInclude Include="InfoSearch.h" />
     <ClInclude Include="Login.h" />
     <ClInclude Include="Producer.h" />
     <ClInclude Include="Resource.h" />
@@ -212,11 +211,10 @@
     <ClCompile Include="Admin.cpp" />
     <ClCompile Include="ado.cpp" />
     <ClCompile Include="DrugRegister.cpp" />
-    <ClCompile Include="DrugSearch.cpp" />
     <ClCompile Include="Drugstore.cpp" />
     <ClCompile Include="DrugTraceability.cpp" />
     <ClCompile Include="FirmRegister.cpp" />
-    <ClCompile Include="FirmSearch.cpp" />
+    <ClCompile Include="InfoSearch.cpp" />
     <ClCompile Include="Login.cpp" />
     <ClCompile Include="Producer.cpp" />
     <ClCompile Include="stdafx.cpp">

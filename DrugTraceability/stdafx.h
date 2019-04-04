@@ -46,18 +46,19 @@ struct Firm
 	char Name[30];    //名称
 	char Address[60]; //地址
 	char LeaderName[20]; //领导人
+	char FirmType[10];   //公司类型  1-药监局 2-生产商 3-中转站 4-药店
 	char Info[200]; //公司简介
 	char Tel[12];//电话
 	char StartTime[11]; //注册日期
 	int Deadline; //有效期	
-	int FirmType;   //公司类型  1-药监局 2-生产商 3-中转站 4-药店
+	
 };
 struct Drug
 {
 	char DrugID[11];//药品ID
 	char Name[20];//名称
 	char Component[40];//成分
-	char HowEat[40];//使用方法
+	//char HowEat[40];//使用方法
 	char Effect[60];//药效
 	char StartTime[11];//生产日期
 	char Info[200]; //简述

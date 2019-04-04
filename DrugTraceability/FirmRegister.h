@@ -33,9 +33,10 @@ public:
 	CString Address;
 	CString Tel;
 	CString Type;
-	int Deadline;
+//	int Deadline;
 	CString Info;
 	afx_msg void OnBnClickedOk();
 	virtual BOOL OnInitDialog();
 	afx_msg void OnDestroy();
+	int Deadline;
 };

@@ -1,6 +1,5 @@
 #pragma once
-#include "Admin.h"
-
+#include "ado.h"
 // CDrugRegister 对话框
 
 class CDrugRegister : public CDialogEx
@@ -8,7 +7,7 @@ class CDrugRegister : public CDialogEx
 	DECLARE_DYNAMIC(CDrugRegister)
 
 public:
-	CAdmin *m_admin;
+	CADODatabase * pDB;
 	CDrugRegister(CWnd* pParent = NULL);   // 标准构造函数
 	virtual ~CDrugRegister();
 
@@ -25,4 +24,15 @@ protected:
 	DECLARE_MESSAGE_MAP()
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
+public:
+	virtual BOOL OnInitDialog();
+//	CString DID;
+	CString DName;
+	CString Component;
+	CString Effect;
+	int Deadline;
+	CString Info;
+	afx_msg void OnBnClickedOk();
+	afx_msg void OnDestroy();
+	CString DID;
 };

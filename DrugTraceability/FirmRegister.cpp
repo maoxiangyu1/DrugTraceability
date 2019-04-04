@@ -20,6 +20,7 @@ CFirmRegister::CFirmRegister(CWnd* pParent /*=NULL*/)
 	, Deadline(0)
 	, Type(_T(""))
 	, Info(_T(""))
+	
 {
 #ifndef _WIN32_WCE
 	EnableActiveAccessibility();
@@ -53,9 +54,11 @@ void CFirmRegister::DoDataExchange(CDataExchange* pDX)
 	DDV_MaxChars(pDX, Tel, 11);
 	//  DDX_Text(pDX, IDC_EDIT5, Deadline);
 	DDX_CBString(pDX, IDC_COMBO5, Type);
-	DDX_Text(pDX, IDC_EDIT5, Deadline);
-	DDV_MinMaxInt(pDX, Deadline, 0, 50);
+	//  DDX_Text(pDX, IDC_EDIT5, Deadline);
+	//  DDV_MinMaxInt(pDX, Deadline, 0, 50);
 	DDX_Text(pDX, IDC_EDIT6, Info);
+	DDX_Text(pDX, IDC_EDIT5, Deadline);
+	DDV_MinMaxInt(pDX, Deadline, 0, 9999);
 }
 
 
@@ -118,19 +121,17 @@ void CFirmRegister::OnBnClickedOk()//注册
 	dwRet[0] = Dongle_Enum(pDongleInfo, &nCount);
 	if (Type == "生产商")
 	{
-		firm.FirmType = 2;
 		dwRet[5] = Dongle_SetUserID(hDongle, 0x11111111);
 	}
 	if (Type == "中转站")
 	{
-		firm.FirmType = 3;
 		dwRet[5] = Dongle_SetUserID(hDongle, 0x22222222);
 	}
 	if (Type == "药店")
 	{
-		firm.FirmType = 4;
 		dwRet[5] = Dongle_SetUserID(hDongle, 0x33333333);
 	}
+	strcpy(firm.FirmType, Type);
 	strcpy(firm.Address, Address);
 	firm.Deadline = Deadline;
 	strcpy(firm.Info, Info);
@@ -181,8 +182,8 @@ void CFirmRegister::OnBnClickedOk()//注册
 	GetDlgItem(IDC_STATIC23)->SetWindowText("开始写入数据库信息！");
 	
 	CString sql;
-	sql.Format("insert into Firm values('%s','%s','%s','%s','%s','%s','%s',%d,%d);"
-		, firm.FirmID, Name, Address, LeaderName, Info, firm.Tel,firm.StartTime, firm.Deadline, firm.FirmType);
+	sql.Format("insert into Firm values('%s','%s','%s','%s','%s','%s','%s','%s',%d);"
+		, firm.FirmID, Name, Address, LeaderName, firm.FirmType, Info, firm.Tel, firm.StartTime, firm.Deadline);
 	if (pDB->Execute(sql) != TRUE)
 	{
 		AfxMessageBox("公司注册失败！");

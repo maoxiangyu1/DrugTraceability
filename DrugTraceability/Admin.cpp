@@ -6,8 +6,7 @@
 #include "Admin.h"
 #include "afxdialogex.h"
 #include "FirmRegister.h"
-#include "DrugSearch.h"
-#include "FirmSearch.h"
+#include "InfoSearch.h"
 #include "DrugRegister.h"
 // CAdmin 对话框
 
@@ -97,7 +96,6 @@ void CAdmin::OnBnClickedRegsiterfirm()//注册公司
 void CAdmin::OnBnClickedRegsiterdrug()//注册药品
 {
 	CDrugRegister dlg;
-	dlg.m_admin = this;
 	dlg.DoModal();
 	// TODO: 在此添加控件通知处理程序代码
 }
@@ -105,8 +103,8 @@ void CAdmin::OnBnClickedRegsiterdrug()//注册药品
 
 void CAdmin::OnBnClickedSearchfirm()//查询公司
 {
-	CFirmSearch dlg;
-	dlg.m_admin = this;
+	CInfoSearch dlg;
+	dlg.type = 1;
 	dlg.DoModal();
 	// TODO: 在此添加控件通知处理程序代码
 }
@@ -114,8 +112,8 @@ void CAdmin::OnBnClickedSearchfirm()//查询公司
 
 void CAdmin::OnBnClickedSearchdrug()//查询药品
 {
-	CDrugSearch dlg;
-	dlg.m_admin = this;
+	CInfoSearch dlg;
+	dlg.type = 2;
 	dlg.DoModal();
 	// TODO: 在此添加控件通知处理程序代码
 }

@@ -141,6 +141,7 @@ BOOL CLogin::OnInitDialog()
 	memcpy(&firm, buffer, size);
 	//s.Format("%d-%d-%d", firm.StartTime.GetYear(), firm.StartTime.GetMonth(), firm.StartTime.GetDay());
 	
+	/*
 	switch (firm.FirmType)
 	{
 	case 1:
@@ -159,6 +160,9 @@ BOOL CLogin::OnInitDialog()
 		FType = "未知类型";
 		break;
 	}
+	*/
+	FType = firm.FirmType;
+
 	Info.Format("公司ID：%s\r\n\r\n公司名称：%s\r\n\r\n公司类型：%s\r\n\r\n公司负责人：%s\r\n\r\n公司电话：%s\r\n\r\n公司地址：%s\r\n\r\n公司注册日期：%s\r\n\r\n公司有效期：%d个月\r\n\r\n公司简介：%s"
 			,firm.FirmID, firm.Name,FType,firm.LeaderName,firm.Tel,firm.Address,firm.StartTime,firm.Deadline,firm.Info);
 	GetDlgItem(IDC_STATICW)->SetWindowTextA("读取身份信息成功！");

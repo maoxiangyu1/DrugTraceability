@@ -55,16 +55,13 @@
     <ClInclude Include="FirmRegister.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="DrugSearch.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="FirmSearch.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="ado.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="DrugRegister.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="InfoSearch.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -96,16 +93,13 @@
     <ClCompile Include="FirmRegister.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="DrugSearch.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="FirmSearch.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="ado.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="DrugRegister.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="InfoSearch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
