@@ -107,7 +107,7 @@ BOOL CWelcome::OnInitDialog()
 	CFile file("¼ò½é.txt", CFile::modeRead);
 
 	char *pBuf;
-	int iLen = file.GetLength();
+	ULONG iLen = file.GetLength();
 	pBuf = new char[iLen];
 	file.Read(pBuf, iLen);
 	pBuf[iLen] = 0;

@@ -5,7 +5,7 @@
 #include "DrugTraceability.h"
 #include "Drugstore.h"
 #include "afxdialogex.h"
-
+#include "Drug.h"
 
 // CDrugstore 对话框
 
@@ -43,6 +43,7 @@ void CDrugstore::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CDrugstore, CDialogEx)
+	ON_BN_CLICKED(IDDRUGPROD, &CDrugstore::OnBnClickedDrugprod)
 END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CDrugstore, CDialogEx)
@@ -62,3 +63,13 @@ END_INTERFACE_MAP()
 
 
 // CDrugstore 消息处理程序
+
+
+void CDrugstore::OnBnClickedDrugprod()
+{
+	CDrug dlg;
+	dlg.type = 3;
+	dlg.m_d = this;
+	dlg.DoModal();
+	// TODO: 在此添加控件通知处理程序代码
+}

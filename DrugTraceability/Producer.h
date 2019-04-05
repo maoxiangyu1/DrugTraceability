@@ -25,4 +25,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 	DECLARE_DISPATCH_MAP()
 	DECLARE_INTERFACE_MAP()
+public:
+	afx_msg void OnBnClickedDrugprod();
 };

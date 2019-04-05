@@ -53,6 +53,7 @@ struct Firm
 	int Deadline; //有效期	
 	
 };
+/*
 struct Drug
 {
 	char DrugID[11];//药品ID
@@ -63,6 +64,13 @@ struct Drug
 	char StartTime[11];//生产日期
 	char Info[200]; //简述
 	int Deadline;//过期日期
+};
+*/
+struct Currency
+{
+	unsigned char info[16];
+	unsigned char HID[16];
+	unsigned char Time[11];
 };
 #ifdef _UNICODE
 #if defined _M_IX86

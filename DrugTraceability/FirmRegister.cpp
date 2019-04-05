@@ -106,19 +106,50 @@ void CFirmRegister::OnBnClickedOk()//注册
 		AfxMessageBox("连接待写入设备失败！");
 		return;
 	}	
+	/*
 	dwRet[0] = Dongle_Open(&hDongle, 1);
 	if (hDongle == m_admin->m_main->hDongle)
 	{
 		dwRet[0] = Dongle_Open(&hDongle, 0);
 	}
+	*/
+	
+	pDongleInfo = (DONGLE_INFO *)malloc(nCount * sizeof(DONGLE_INFO));
+	dwRet[0] = Dongle_Enum(pDongleInfo, &nCount);
+	strcpy(firm.FirmType, Type);
+	strcpy(firm.Address, Address);
+	firm.Deadline = Deadline;
+	strcpy(firm.Info, Info);
+	strcpy(firm.LeaderName, LeaderName);
+	strcpy(firm.Name, Name);
+	strcpy(firm.Tel, Tel);
+	CTime t=CTime::GetCurrentTime();
+	s = t.Format("%Y-%m-%d");
+	strcpy(firm.StartTime, s);
+	
+	for (int i = 0; i < 8; i++)
+	{
+		s.Format("%02X", pDongleInfo[1].m_HID[i]);
+		HID = HID + s;
+	}
+	dwRet[0] = Dongle_Open(&hDongle, 1);
+	if (HID == m_admin->m_main->HID)
+	{
+		HID = "";
+		for (int i = 0; i < 8; i++)
+		{
+			s.Format("%02X", pDongleInfo[0].m_HID[i]);
+			HID = HID + s;
+		}
+		dwRet[0] = Dongle_Open(&hDongle, 0);
+	}
+	strcpy(firm.FirmID, HID);
 	int p = 255;
 	if (Dongle_VerifyPIN(hDongle, FLAG_ADMINPIN, AdminPin, &p) != DONGLE_SUCCESS)
 	{
 		AfxMessageBox("待写入设备无法识别！");
 		return;
 	}
-	pDongleInfo = (DONGLE_INFO *)malloc(nCount * sizeof(DONGLE_INFO));
-	dwRet[0] = Dongle_Enum(pDongleInfo, &nCount);
 	if (Type == "生产商")
 	{
 		dwRet[5] = Dongle_SetUserID(hDongle, 0x11111111);
@@ -131,32 +162,6 @@ void CFirmRegister::OnBnClickedOk()//注册
 	{
 		dwRet[5] = Dongle_SetUserID(hDongle, 0x33333333);
 	}
-	strcpy(firm.FirmType, Type);
-	strcpy(firm.Address, Address);
-	firm.Deadline = Deadline;
-	strcpy(firm.Info, Info);
-	strcpy(firm.LeaderName, LeaderName);
-	strcpy(firm.Name, Name);
-	strcpy(firm.Tel, Tel);
-	CTime t=GetCurrentTime();
-	s = t.Format("%Y-%m-%d");
-	strcpy(firm.StartTime, s);
-	
-	for (int i = 0; i < 8; i++)
-	{
-		s.Format("%02X", pDongleInfo[1].m_HID[i]);
-		HID = HID + s;
-	}
-	if (HID == m_admin->m_main->HID)
-	{
-		HID = "";
-		for (int i = 0; i < 8; i++)
-		{
-			s.Format("%02X", pDongleInfo[0].m_HID[i]);
-			HID = HID + s;
-		}
-	}
-	strcpy(firm.FirmID, HID);
 	GetDlgItem(IDC_STATIC23)->SetWindowText("开始写入身份信息！请勿拔出USB身份！");
 	int size;
 	BYTE sizebyte[4];

@@ -1,7 +1,7 @@
 #pragma once
 #include "Welcome.h"
 #include "Dongle_API.h"
-
+#include "ado.h"
 // CLogin ¶Ô»°¿ò
 
 class CLogin : public CDialogEx
@@ -9,6 +9,8 @@ class CLogin : public CDialogEx
 	DECLARE_DYNAMIC(CLogin)
 
 public:
+	CADODatabase * pDB;
+	CADORecordset* pRs;
 	CString FType;
 	int size;
 	BYTE sizebyte[4];

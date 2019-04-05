@@ -5,7 +5,7 @@
 #include "DrugTraceability.h"
 #include "Transfer.h"
 #include "afxdialogex.h"
-
+#include "Drug.h"
 
 // CTransfer 对话框
 
@@ -43,6 +43,7 @@ void CTransfer::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CTransfer, CDialogEx)
+	ON_BN_CLICKED(IDDRUGPROD, &CTransfer::OnBnClickedDrugprod)
 END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CTransfer, CDialogEx)
@@ -62,3 +63,13 @@ END_INTERFACE_MAP()
 
 
 // CTransfer 消息处理程序
+
+
+void CTransfer::OnBnClickedDrugprod()
+{
+	CDrug dlg;
+	dlg.type = 2;
+	dlg.m_t = this;
+	dlg.DoModal();
+	// TODO: 在此添加控件通知处理程序代码
+}

@@ -64,6 +64,15 @@
     <ClInclude Include="InfoSearch.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="D:\mfc-master\DrugTraceability\resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Drug.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="mwrf32.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DrugTraceability.cpp">
@@ -102,6 +111,9 @@
     <ClCompile Include="InfoSearch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Drug.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DrugTraceability.rc">
@@ -117,8 +129,12 @@
     <Image Include="res\DrugTraceability.ico">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="D:\mfc-master\DrugTraceability\res\DrugTraceability.ico">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Library Include="Dongle_s.lib" />
+    <Library Include="mwhrf_bj.lib" />
   </ItemGroup>
 </Project>

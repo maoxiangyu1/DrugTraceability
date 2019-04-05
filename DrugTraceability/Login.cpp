@@ -78,6 +78,25 @@ BOOL CLogin::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 	//===========
+	/*
+	time_t n;
+	n = time(NULL);
+	CTime t;
+	t = CTime::GetCurrentTime();
+	CString b;
+	b = t.Format("%Y-%m-%d");
+	*/
+	//===========
+	CString strsql;
+	s = "File Name=linkDB.udl";
+	pDB = new CADODatabase;
+	pRs = new CADORecordset(pDB);
+	if (!pDB->Open(s))
+	{
+		AfxMessageBox("数据库链接失败！单击退出！");
+		this->EndDialog(0);
+		return TRUE;
+	}
 	hDongle = NULL;
 	int nCount;
 	int dwRet = Dongle_Enum(NULL, &nCount);//枚举锁的数量
@@ -187,6 +206,24 @@ void CLogin::OnBnClickedButton1() //登录按钮
 		UpdateWindow();
 		return;
 	}
+	s.Format("select * from Firm where FID = '%s';", HID);
+	pRs->Open(_bstr_t(s), 1);
+	UINT total = pRs->GetRecordCount();
+	if (total != 1)
+	{
+		AfxMessageBox("在服务器上未查询到您的身份！");
+		GetDlgItem(IDC_BUTTON1)->SetWindowTextA("重试");
+		return;
+	}
+	s.Format("select * from Firm where FID = '%s' and FDeadline > DATEDIFF(MONTH,FRegisterTime,GETDATE());", HID);
+	pRs->Open(_bstr_t(s), 1);
+	total = pRs->GetRecordCount();
+	if (total != 1)
+	{
+		AfxMessageBox("您的身份已到期！");
+		GetDlgItem(IDC_BUTTON1)->SetWindowTextA("重试");
+		return;
+	}
 	BYTE temp[16];
 	int dwRet = Dongle_HASH(hDongle, FLAG_HASH_MD5, buffer, 4076, temp);
 	for (int i = 0; i < 16; i++)
@@ -236,6 +273,7 @@ void CLogin::OnBnClickedButton1() //登录按钮
 		return;
 	}
 	AfxMessageBox("无确定您的身份信息！");
+	GetDlgItem(IDC_BUTTON1)->SetWindowTextA("重试");
 	// TODO: 在此添加控件通知处理程序代码
 }
 
@@ -243,5 +281,9 @@ void CLogin::OnDestroy()
 {
 	CDialogEx::OnDestroy();
 	free(pDongleInfo);
+	pRs->Close();
+	pDB->Close();
+	free(pRs);
+	free(pDB);
 	// TODO: 在此处添加消息处理程序代码
 }

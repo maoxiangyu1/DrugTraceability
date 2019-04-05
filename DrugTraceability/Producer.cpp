@@ -5,7 +5,7 @@
 #include "DrugTraceability.h"
 #include "Producer.h"
 #include "afxdialogex.h"
-
+#include "Drug.h"
 
 // CProducer 对话框
 
@@ -43,6 +43,7 @@ void CProducer::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CProducer, CDialogEx)
+	ON_BN_CLICKED(IDDRUGPROD, &CProducer::OnBnClickedDrugprod)
 END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CProducer, CDialogEx)
@@ -62,3 +63,13 @@ END_INTERFACE_MAP()
 
 
 // CProducer 消息处理程序
+
+
+void CProducer::OnBnClickedDrugprod()
+{
+	CDrug dlg;
+	dlg.type = 1;
+	dlg.m_p = this;
+	dlg.DoModal();
+	// TODO: 在此添加控件通知处理程序代码
+}

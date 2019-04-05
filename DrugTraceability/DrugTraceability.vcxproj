@@ -193,13 +193,16 @@
   <ItemGroup>
     <ClInclude Include="Admin.h" />
     <ClInclude Include="ado.h" />
+    <ClInclude Include="D:\mfc-master\DrugTraceability\resource.h" />
     <ClInclude Include="Dongle_API.h" />
+    <ClInclude Include="Drug.h" />
     <ClInclude Include="DrugRegister.h" />
     <ClInclude Include="Drugstore.h" />
     <ClInclude Include="DrugTraceability.h" />
     <ClInclude Include="FirmRegister.h" />
     <ClInclude Include="InfoSearch.h" />
     <ClInclude Include="Login.h" />
+    <ClInclude Include="mwrf32.h" />
     <ClInclude Include="Producer.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -210,6 +213,7 @@
   <ItemGroup>
     <ClCompile Include="Admin.cpp" />
     <ClCompile Include="ado.cpp" />
+    <ClCompile Include="Drug.cpp" />
     <ClCompile Include="DrugRegister.cpp" />
     <ClCompile Include="Drugstore.cpp" />
     <ClCompile Include="DrugTraceability.cpp" />
@@ -233,10 +237,12 @@
     <None Include="res\DrugTraceability.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="D:\mfc-master\DrugTraceability\res\DrugTraceability.ico" />
     <Image Include="res\DrugTraceability.ico" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Dongle_s.lib" />
+    <Library Include="mwhrf_bj.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
