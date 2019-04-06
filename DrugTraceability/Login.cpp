@@ -84,7 +84,7 @@ BOOL CLogin::OnInitDialog()
 	CTime t;
 	t = CTime::GetCurrentTime();
 	CString b;
-	b = t.Format("%Y-%m-%d");
+	b = t.Format("%Y-%m-%d %H:%M");
 	*/
 	//===========
 	CString strsql;
@@ -281,6 +281,7 @@ void CLogin::OnDestroy()
 {
 	CDialogEx::OnDestroy();
 	free(pDongleInfo);
+	Dongle_Close(hDongle);
 	pRs->Close();
 	pDB->Close();
 	free(pRs);

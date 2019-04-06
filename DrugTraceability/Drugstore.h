@@ -27,4 +27,6 @@ protected:
 	DECLARE_INTERFACE_MAP()
 public:
 	afx_msg void OnBnClickedDrugprod();
+	afx_msg void OnBnClickedDicread();
+	afx_msg void OnBnClickedDrugsearch();
 };

@@ -6,7 +6,8 @@
 #include "Transfer.h"
 #include "afxdialogex.h"
 #include "Drug.h"
-
+#include "Cardread.h"
+#include "InfoSearch.h"
 // CTransfer 对话框
 
 IMPLEMENT_DYNAMIC(CTransfer, CDialogEx)
@@ -44,6 +45,8 @@ void CTransfer::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CTransfer, CDialogEx)
 	ON_BN_CLICKED(IDDRUGPROD, &CTransfer::OnBnClickedDrugprod)
+	ON_BN_CLICKED(IDDICREAD, &CTransfer::OnBnClickedDicread)
+	ON_BN_CLICKED(IDDRUGSEARCH, &CTransfer::OnBnClickedDrugsearch)
 END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CTransfer, CDialogEx)
@@ -70,6 +73,27 @@ void CTransfer::OnBnClickedDrugprod()
 	CDrug dlg;
 	dlg.type = 2;
 	dlg.m_t = this;
+	dlg.DoModal();
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CTransfer::OnBnClickedDicread()
+{
+	CCardread dlg;
+	dlg.type = 2;
+	dlg.m_t = this;
+	dlg.DoModal();
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CTransfer::OnBnClickedDrugsearch()
+{
+	CInfoSearch dlg;
+	dlg.m_t = this;
+	dlg.type = 3;
+	dlg.degree = 2;
 	dlg.DoModal();
 	// TODO: 在此添加控件通知处理程序代码
 }

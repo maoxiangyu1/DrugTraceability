@@ -6,7 +6,8 @@
 #include "Drugstore.h"
 #include "afxdialogex.h"
 #include "Drug.h"
-
+#include "Cardread.h"
+#include "InfoSearch.h"
 // CDrugstore 对话框
 
 IMPLEMENT_DYNAMIC(CDrugstore, CDialogEx)
@@ -44,6 +45,8 @@ void CDrugstore::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CDrugstore, CDialogEx)
 	ON_BN_CLICKED(IDDRUGPROD, &CDrugstore::OnBnClickedDrugprod)
+	ON_BN_CLICKED(IDDICREAD, &CDrugstore::OnBnClickedDicread)
+	ON_BN_CLICKED(IDDRUGSEARCH, &CDrugstore::OnBnClickedDrugsearch)
 END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CDrugstore, CDialogEx)
@@ -70,6 +73,27 @@ void CDrugstore::OnBnClickedDrugprod()
 	CDrug dlg;
 	dlg.type = 3;
 	dlg.m_d = this;
+	dlg.DoModal();
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CDrugstore::OnBnClickedDicread()
+{
+	CCardread dlg;
+	dlg.type = 3;
+	dlg.m_d = this;
+	dlg.DoModal();
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CDrugstore::OnBnClickedDrugsearch()
+{
+	CInfoSearch dlg;
+	dlg.m_d = this;
+	dlg.type = 3;
+	dlg.degree = 3;
 	dlg.DoModal();
 	// TODO: 在此添加控件通知处理程序代码
 }

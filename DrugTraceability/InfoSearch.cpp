@@ -146,6 +146,81 @@ BOOL CInfoSearch::OnInitDialog()
 		pRs->Open(_bstr_t(strsql), 1);
 
 	}
+	if (type == 3)
+	{
+		
+		if (degree == 0)
+		{
+			//===  
+			SetWindowText("药品流通查询");
+			com.AddString("流通编号");
+			com.AddString("公司编号");
+			com.AddString("公司名称");
+			com.AddString("药品编号");
+			com.AddString("药品名称");
+			//===
+			m_listPerson.InsertColumn(0, "流通编号", LVCFMT_LEFT, 130, 0);
+			m_listPerson.InsertColumn(1, "公司编号", LVCFMT_LEFT, 130, 1);
+			m_listPerson.InsertColumn(2, "公司名称", LVCFMT_LEFT, 130, 2);
+			m_listPerson.InsertColumn(3, "药品编号", LVCFMT_LEFT, 130, 3);
+			m_listPerson.InsertColumn(4, "药品名称", LVCFMT_LEFT, 130, 4);
+			m_listPerson.InsertColumn(5, "流通数量", LVCFMT_LEFT, 130, 5);
+			m_listPerson.InsertColumn(6, "流通时间", LVCFMT_LEFT, 130, 6);
+			strsql.Format("SELECT * FROM view_1");
+			pRs->Open(_bstr_t(strsql), 1);
+		}
+		if (degree == 1)
+		{
+			HID = m_p->m_main->HID;
+			//===  
+			SetWindowText("生产记录查询");
+			com.AddString("流通编号");
+			com.AddString("药品编号");
+			com.AddString("药品名称");
+			//===
+			m_listPerson.InsertColumn(0, "流通编号", LVCFMT_LEFT, 130, 0);
+			m_listPerson.InsertColumn(1, "药品编号", LVCFMT_LEFT, 130, 1);
+			m_listPerson.InsertColumn(2, "药品名称", LVCFMT_LEFT, 130, 2);
+			m_listPerson.InsertColumn(3, "流通数量", LVCFMT_LEFT, 130, 3);
+			m_listPerson.InsertColumn(4, "流通时间", LVCFMT_LEFT, 130, 4);
+			strsql.Format("SELECT CID,DID,DName,CNum,PTime FROM view_1 where FID = '%s'",m_p->m_main->HID);
+			pRs->Open(_bstr_t(strsql), 1);
+		}
+		if (degree == 2)
+		{
+			HID = m_t->m_main->HID;
+			//===  
+			SetWindowText("中转记录查询");
+			com.AddString("流通编号");
+			com.AddString("药品编号");
+			com.AddString("药品名称");
+			//===
+			m_listPerson.InsertColumn(0, "流通编号", LVCFMT_LEFT, 130, 0);
+			m_listPerson.InsertColumn(1, "药品编号", LVCFMT_LEFT, 130, 1);
+			m_listPerson.InsertColumn(2, "药品名称", LVCFMT_LEFT, 130, 2);
+			m_listPerson.InsertColumn(3, "流通数量", LVCFMT_LEFT, 130, 3);
+			m_listPerson.InsertColumn(4, "流通时间", LVCFMT_LEFT, 130, 4);
+			strsql.Format("SELECT CID,DID,DName,CNum,PTime FROM view_1 where FID = '%s'", m_t->m_main->HID);
+			pRs->Open(_bstr_t(strsql), 1);
+		}
+		if (degree == 3)
+		{
+			HID = m_d->m_main->HID;
+			//===  
+			SetWindowText("出售记录查询");
+			com.AddString("流通编号");
+			com.AddString("药品编号");
+			com.AddString("药品名称");
+			//===
+			m_listPerson.InsertColumn(0, "流通编号", LVCFMT_LEFT, 130, 0);
+			m_listPerson.InsertColumn(1, "药品编号", LVCFMT_LEFT, 130, 1);
+			m_listPerson.InsertColumn(2, "药品名称", LVCFMT_LEFT, 130, 2);
+			m_listPerson.InsertColumn(3, "流通数量", LVCFMT_LEFT, 130, 3);
+			m_listPerson.InsertColumn(4, "流通时间", LVCFMT_LEFT, 130, 4);
+			strsql.Format("SELECT CID,DID,DName,CNum,PTime FROM view_1 where FID = '%s'", m_d->m_main->HID);
+			pRs->Open(_bstr_t(strsql), 1);
+		}
+	}
 	if (!pRs->GetRecordCount())
 	{
 		m_listPerson.DeleteAllItems();
@@ -246,7 +321,76 @@ BOOL CInfoSearch::RefreshList(CADORecordset& recordset)
 
 		return TRUE;
 	}
-	
+	if (type == 3)
+	{
+		if (degree == 0)
+		{
+			m_listPerson.DeleteAllItems();
+
+			if (!recordset.IsOpen())
+				return FALSE;
+
+			recordset.MoveFirst();
+			CString CID,FID, FName, DID, DName, CNum, PTime;
+			int indexofList = 0;
+			while (!(recordset.IsEOF()))
+			{
+				recordset.GetFieldValue("CID", CID);
+				recordset.GetFieldValue("FID", FID);
+				recordset.GetFieldValue("FName", FName);
+				recordset.GetFieldValue("DID", DID);
+				recordset.GetFieldValue("DName", DName);
+				recordset.GetFieldValue("CNum", CNum);
+				recordset.GetFieldValue("PTime", PTime);
+
+
+				m_listPerson.InsertItem(indexofList, CID);
+				m_listPerson.SetItemText(indexofList, 1, FID);
+				m_listPerson.SetItemText(indexofList, 2, FName);
+				m_listPerson.SetItemText(indexofList, 3, DID);
+				m_listPerson.SetItemText(indexofList, 4, DName);
+				m_listPerson.SetItemText(indexofList, 5, CNum);
+				m_listPerson.SetItemText(indexofList, 6, PTime);
+				indexofList += 1;
+				recordset.MoveNext();
+			}
+			recordset.MoveFirst();
+
+			return TRUE;
+		}
+		else
+		{
+			m_listPerson.DeleteAllItems();
+
+			if (!recordset.IsOpen())
+				return FALSE;
+
+			recordset.MoveFirst();
+			CString  CID,DID, DName, CNum, PTime;
+			int indexofList = 0;
+			while (!(recordset.IsEOF()))
+			{
+				recordset.GetFieldValue("CID", CID);
+				recordset.GetFieldValue("DID", DID);
+				recordset.GetFieldValue("DName", DName);
+				recordset.GetFieldValue("CNum", CNum);
+				recordset.GetFieldValue("PTime", PTime);
+
+
+				m_listPerson.InsertItem(indexofList, CID);
+				m_listPerson.SetItemText(indexofList, 1, DID);
+				m_listPerson.SetItemText(indexofList, 2, DName);
+				m_listPerson.SetItemText(indexofList, 3, CNum);
+				m_listPerson.SetItemText(indexofList, 4, PTime);
+				indexofList += 1;
+				recordset.MoveNext();
+			}
+			recordset.MoveFirst();
+
+			return TRUE;
+		}
+		
+	}
 }
 
 void CInfoSearch::OnBnClickedDel()
@@ -298,6 +442,65 @@ void CInfoSearch::OnBnClickedDel()
 			AfxMessageBox("删除药品信息失败！");
 			return;
 		}
+	}
+	if (type == 3)
+	{
+		if (degree == 0)
+		{
+			POSITION pos = m_listPerson.GetFirstSelectedItemPosition();
+			int nItem = m_listPerson.GetNextSelectedItem(pos);
+			CString s1 = m_listPerson.GetItemText(nItem, 0);
+			CString s2 = m_listPerson.GetItemText(nItem, 1);
+			CString s3 = m_listPerson.GetItemText(nItem, 3);
+			CString s4 = m_listPerson.GetItemText(nItem, 6);
+			if (s1 == "" || s2 == ""|| s3 == "" || s4 == "")
+			{
+				AfxMessageBox("请选中您要删除的信息！");
+				return;
+			}
+			CString S;
+			S.Format("delete Currency where CID = '%s' and FID = '%s' and DID = '%s' and PTime = '%s'",s1,s2,s3,s4 );
+			if (pDB->Execute(S) == TRUE)
+			{
+				m_listPerson.DeleteItem(nItem);
+				AfxMessageBox("删除信息成功！");
+				return;
+			}
+			else
+			{
+				AfxMessageBox("删除信息失败！");
+				return;
+			}
+		}
+		else
+		{
+			POSITION pos = m_listPerson.GetFirstSelectedItemPosition();
+			int nItem = m_listPerson.GetNextSelectedItem(pos);
+			CString s1 = m_listPerson.GetItemText(nItem, 0);
+			CString s2 = m_listPerson.GetItemText(nItem, 1);
+			CString s3 = m_listPerson.GetItemText(nItem, 4);
+
+			if (s1 == "" || s2 == "" || s3 == "" )
+			{
+				AfxMessageBox("请选中您要删除的信息！");
+				return;
+			}
+			CString S;
+			S.Format("delete Currency where CID='%s' and FID = '%s' and DID = '%s' and PTime = '%s'", s1,HID,s2,s3);
+			if (pDB->Execute(S) == TRUE)
+			{
+				m_listPerson.DeleteItem(nItem);
+				AfxMessageBox("删除信息成功！");
+				return;
+			}
+			else
+			{
+				AfxMessageBox("删除信息失败！");
+				return;
+			}
+
+		}
+		
 	}
 	// TODO: 在此添加控件通知处理程序代码
 }
@@ -397,7 +600,84 @@ void CInfoSearch::OnBnClickedSearch()
 			strsql = "select * from Drug where DInfo like '%" + m_key + "%'";
 		}
 	}
-
+	if (type == 3)
+	{
+		if (degree == 0)
+		{
+			if (m_key == "")
+			{
+				strsql.Format("SELECT * FROM view_1");
+				pRs->Open(_bstr_t(strsql), 1);
+				if (!pRs->GetRecordCount())
+				{
+					m_listPerson.DeleteAllItems();
+					return;
+				}
+				pRs->Open(_bstr_t(strsql), 1);
+				RefreshList(*(pRs));
+				return;
+			}
+			if (m_type == "")
+			{
+				AfxMessageBox("请选择查询类型！");
+				return;
+			}
+			if (m_type == "药品编号")
+			{
+				strsql = "select * from view_1 where DID like '%" + m_key + "%'";
+			}
+			if (m_type == "药品名称")
+			{
+				strsql = "select * from view_1 where DName like '%" + m_key + "%'";
+			}
+			if (m_type == "公司编号")
+			{
+				strsql = "select * from view_1 where FID like '%" + m_key + "%'";
+			}
+			if (m_type == "公司名称")
+			{
+				strsql = "select * from view_1 where FName like '%" + m_key + "%'";
+			}
+			if (m_type == "流通编号")
+			{
+				strsql = "select * from view_1 where CID like '%" + m_key + "%'";
+			}
+		}
+		else
+		{
+			if (m_key == "")
+			{
+				strsql.Format("SELECT * FROM view_1 where FID = '%s'",HID);
+				pRs->Open(_bstr_t(strsql), 1);
+				if (!pRs->GetRecordCount())
+				{
+					m_listPerson.DeleteAllItems();
+					return;
+				}
+				pRs->Open(_bstr_t(strsql), 1);
+				RefreshList(*(pRs));
+				return;
+			}
+			if (m_type == "")
+			{
+				AfxMessageBox("请选择查询类型！");
+				return;
+			}
+			if (m_type == "药品编号")
+			{
+				strsql = "select CID,DID,DName,CNum,PTime from view_1 where DID like '%" + m_key + "%' and FID = '" + HID + "'";
+			}
+			if (m_type == "药品名称")
+			{
+				strsql = "select CID,DID,DName,CNum,PTime from view_1 where DName like '%" + m_key + "%' and FID = '" + HID + "'";
+			}
+			if (m_type == "流通编号")
+			{
+				strsql = "select CID,DID,DName,CNum,PTime from view_1 where CID like '%" + m_key + "%' and FID = '" + HID + "'";
+			}
+		}
+		
+	}
 	pRs->Open(_bstr_t(strsql), 1);
 	if (!pRs->GetRecordCount())
 	{

@@ -32,4 +32,7 @@ public:
 	afx_msg void OnBnClickedSearchfirm();
 	afx_msg void OnBnClickedSearchdrug();
 	afx_msg void OnBnClickedCancel();
+	afx_msg void OnBnClickedReadic();
+	afx_msg void OnBnClickedDa();
+	afx_msg void OnBnClickedChangekey();
 };

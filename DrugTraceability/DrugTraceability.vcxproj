@@ -193,6 +193,7 @@
   <ItemGroup>
     <ClInclude Include="Admin.h" />
     <ClInclude Include="ado.h" />
+    <ClInclude Include="Cardread.h" />
     <ClInclude Include="D:\mfc-master\DrugTraceability\resource.h" />
     <ClInclude Include="Dongle_API.h" />
     <ClInclude Include="Drug.h" />
@@ -213,6 +214,7 @@
   <ItemGroup>
     <ClCompile Include="Admin.cpp" />
     <ClCompile Include="ado.cpp" />
+    <ClCompile Include="Cardread.cpp" />
     <ClCompile Include="Drug.cpp" />
     <ClCompile Include="DrugRegister.cpp" />
     <ClCompile Include="Drugstore.cpp" />

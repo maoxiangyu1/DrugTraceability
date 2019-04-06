@@ -1,6 +1,7 @@
 #pragma once
 #include "Admin.h"
 #include "ado.h"
+#include "afxwin.h"
 // CFirmRegister 对话框
 
 class CFirmRegister : public CDialogEx
@@ -8,6 +9,7 @@ class CFirmRegister : public CDialogEx
 	DECLARE_DYNAMIC(CFirmRegister)
 
 public:
+	int type;//0-管理员 1-公司注册
 	CADODatabase * pDB;
 	CAdmin *m_admin;
 	CFirmRegister(CWnd* pParent = NULL);   // 标准构造函数
@@ -39,4 +41,5 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnDestroy();
 	int Deadline;
+	CComboBox com;
 };

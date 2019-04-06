@@ -59,6 +59,7 @@ void CFirmRegister::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT6, Info);
 	DDX_Text(pDX, IDC_EDIT5, Deadline);
 	DDV_MinMaxInt(pDX, Deadline, 0, 9999);
+	DDX_Control(pDX, IDC_COMBO5, com);
 }
 
 
@@ -92,7 +93,7 @@ void CFirmRegister::OnBnClickedOk()//注册
 	UpdateData(true);
 	if (Name == "" || LeaderName == "" || Address == "" || Tel == "" || Info == "" || Type == ""||Deadline==0)
 	{
-		AfxMessageBox("公司信息不完整！");
+		AfxMessageBox("信息不完整！");
 		return;
 	}
 	CString s;
@@ -124,7 +125,7 @@ void CFirmRegister::OnBnClickedOk()//注册
 	strcpy(firm.Name, Name);
 	strcpy(firm.Tel, Tel);
 	CTime t=CTime::GetCurrentTime();
-	s = t.Format("%Y-%m-%d");
+	s = t.Format("%Y-%m-%d %H:%M");
 	strcpy(firm.StartTime, s);
 	
 	for (int i = 0; i < 8; i++)
@@ -149,6 +150,10 @@ void CFirmRegister::OnBnClickedOk()//注册
 	{
 		AfxMessageBox("待写入设备无法识别！");
 		return;
+	}
+	if (Type == "管理员")
+	{
+		dwRet[5] = Dongle_SetUserID(hDongle, 0x00000000);
 	}
 	if (Type == "生产商")
 	{
@@ -191,10 +196,10 @@ void CFirmRegister::OnBnClickedOk()//注册
 		, firm.FirmID, Name, Address, LeaderName, firm.FirmType, Info, firm.Tel, firm.StartTime, firm.Deadline);
 	if (pDB->Execute(sql) != TRUE)
 	{
-		AfxMessageBox("公司注册失败！");
+		AfxMessageBox("注册失败！");
 		return;
 	}
-	AfxMessageBox("公司注册成功！");
+	AfxMessageBox("注册成功！");
 	CDialogEx::OnOK();
 }
 
@@ -215,6 +220,26 @@ BOOL CFirmRegister::OnInitDialog()
 		this->EndDialog(0);
 		return TRUE;
 	}
+	if (type == 0)
+	{
+		SetWindowText("管理员授权");
+		GetDlgItem(IDOK)->SetWindowTextA("授权");
+		GetDlgItem(IDC_STATIC1)->SetWindowTextA("昵称：");
+		GetDlgItem(IDC_STATIC2)->SetWindowTextA("姓名：");
+		GetDlgItem(IDC_STATIC3)->SetWindowTextA("地址：");
+		GetDlgItem(IDC_STATIC4)->SetWindowTextA("电话：");
+		GetDlgItem(IDC_STATIC5)->SetWindowTextA("类别：");
+		GetDlgItem(IDC_STATIC6)->SetWindowTextA("授权期限：");
+		GetDlgItem(IDC_STATIC7)->SetWindowTextA("个人介绍：");
+		com.AddString("管理员");
+	}
+	else
+	{
+		com.AddString("生产商");
+		com.AddString("中转站");
+		com.AddString("药店");
+	}
+	
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }

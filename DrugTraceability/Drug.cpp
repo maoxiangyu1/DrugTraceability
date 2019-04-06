@@ -107,14 +107,15 @@ BOOL CDrug::OnInitDialog()
 	if (!pDB->Open(s))
 	{
 		AfxMessageBox("数据库链接失败！单击退出！");
-		this->EndDialog(0);
+		OnCancel();
 		return TRUE;
 	}
 	icdev = Open_USB();
 	if ((int)icdev <= 0)
 	{
 		MessageBox("读卡器连接失败！");
-		this->EndDialog(0);
+		icdev = NULL;
+		OnCancel();
 		return TRUE;
 	}
 	rf_beep(icdev, 20);
@@ -197,8 +198,9 @@ void CDrug::OnBnClickedOk()
 	unsigned long snr = 0;
 	unsigned char _size = 0;
 	unsigned char buffer1[16];
-	unsigned char buffer2[44];
+	unsigned char buffer2[32];
 	unsigned char buffer3[16];
+	unsigned char Info[16];
 	BYTE pHashMD5[16];
 	CString step = "1";
 	Currency c;
@@ -217,7 +219,7 @@ void CDrug::OnBnClickedOk()
 		AfxMessageBox("IC卡片验证出错!");
 		return;
 	}
-
+	sn.Format("%ld", snr);
 	st = rf_select(icdev, snr, &_size);
 	if (st)
 	{
@@ -249,15 +251,15 @@ void CDrug::OnBnClickedOk()
 			//return;
 		}	
 		info = m_did + step;
-		memcpy(c.info, info, 16);
+		memcpy(Info, info, 16);
 		memcpy(c.HID, m_p->m_main->HID,16);
 		CTime t = CTime::GetCurrentTime();
-		CString s = t.Format("%Y-%m-%d");
-		memcpy(c.Time, s,11);
-		memcpy(buffer2, &c, 44);
-		Dongle_HASH(m_p->m_main->hDongle, FLAG_HASH_MD5, buffer2, 44, pHashMD5);
+		CString s = t.Format("%Y-%m-%d %H:%M");
+		memcpy(c.Time, s,16);
+		memcpy(buffer2, &c, sizeof(c));
+		Dongle_HASH(m_p->m_main->hDongle, FLAG_HASH_MD5, buffer2, sizeof(c), pHashMD5);
 		memcpy(buffer3, pHashMD5,16);
-		if (rf_authentication_key(icdev, 0, 1, key)     || rf_write(icdev, 1, c.info)        || //步骤+药品编号
+		if (rf_authentication_key(icdev, 0, 1, key)     || rf_write(icdev, 1, Info)        || //步骤+药品编号
 			rf_authentication_key(icdev, 0, 1*4, key)   || rf_write(icdev, 1 * 4, c.HID)      || //HID
 			rf_authentication_key(icdev, 0, 1*4+1, key) || rf_write(icdev, 1 * 4 + 1, c.Time) || //时间
 			rf_authentication_key(icdev, 0, 1*4+2, key) || rf_write(icdev, 1 * 4 + 2, buffer3)   //MD5
@@ -267,7 +269,7 @@ void CDrug::OnBnClickedOk()
 			return;
 		}
 		GetDlgItem(IDC_STATIC23)->SetWindowText("开始写入数据库信息！");
-		sql.Format("insert into Currency values('%s','%s','%d','%s')", m_p->m_main->HID, m_did, m_Ip, s);
+		sql.Format("insert into Currency values('%s','%s','%s','%d','%s')",sn, m_p->m_main->HID, m_did, m_Ip, s);
 		if (pDB->Execute(sql) == TRUE)
 		{
 			AfxMessageBox("数据库写入成功！");
@@ -288,21 +290,21 @@ void CDrug::OnBnClickedOk()
 		if (bn == "读卡")
 		{
 			st = rf_authentication_key(icdev, 0, 1, key);
-			st = rf_read(icdev, 1, c.info);
-			memcpy(buffer1, c.info, 14);
+			st = rf_read(icdev, 1, Info);
+			memcpy(buffer1, Info, 14);
 			buffer1[14] = '\0';
 			m_did = "";
 			m_did = buffer1;
-			step.Format("%c", c.info[14]);
+			step.Format("%c", Info[14]);
 			step.Format("%d", (_ttoi(step) + 1));
 			info = m_did + step;
 			if (buffer1[15] != '\0')
 			{
-				step.Format("%c%c", c.info[14], c.info[15]);
+				step.Format("%c%c", Info[14], Info[15]);
 				step.Format("%d", (_ttoi(step) + 1));
 				info = m_did + step;
 			}
-			memcpy(c.info, info, 16);
+			memcpy(Info, info, 16);
 			SetDlgItemTextA(IDOK, "确定");
 			UpdateData(FALSE);
 			OnCbnSelchangeCombo1();
@@ -314,31 +316,37 @@ void CDrug::OnBnClickedOk()
 			return;
 		}
 		st = rf_authentication_key(icdev, 0, 1, key);
-		st = rf_read(icdev, 1, c.info);
-		memcpy(buffer1, c.info, 14);
+		st = rf_read(icdev, 1, Info);
+		memcpy(buffer1, Info, 14);
 		buffer1[14] = '\0';
 		m_did = "";
 		m_did = buffer1;
-		step.Format("%c", c.info[14]);
+		step.Format("%c", Info[14]);
 		step.Format("%d", (_ttoi(step) + 1));
 		info = m_did + step;
 		if (buffer1[15] != '\0')
 		{
-			step.Format("%c%c", c.info[14], c.info[15]);
+			step.Format("%c%c", Info[14], Info[15]);
 			step.Format("%d", (_ttoi(step) + 1));
 			info = m_did + step;
 		}
-		memcpy(c.info, info, 16);
+		if ((_ttoi(step) > 16))
+		{
+			AfxMessageBox("记录信息达到上限！");
+			GetDlgItem(IDC_STATIC23)->SetWindowText("记录信息达到上限！");
+			return;
+		}
+		memcpy(Info, info, 16);
 		SetDlgItemTextA(IDOK, "确定");
 		UpdateData(FALSE);
 		OnCbnSelchangeCombo1();
 		memcpy(buffer1,info, 16);
 		memcpy(c.HID, m_t->m_main->HID, 16);
 		CTime t = CTime::GetCurrentTime();
-		CString s = t.Format("%Y-%m-%d");
-		memcpy(c.Time, s, 11);
-		memcpy(buffer2, &c, 44);
-		Dongle_HASH(m_t->m_main->hDongle, FLAG_HASH_MD5, buffer2, 44, pHashMD5);
+		CString s = t.Format("%Y-%m-%d %H:%M");
+		memcpy(c.Time, s, 16);
+		memcpy(buffer2, &c, sizeof(c));
+		Dongle_HASH(m_t->m_main->hDongle, FLAG_HASH_MD5, buffer2, sizeof(c), pHashMD5);
 		memcpy(buffer3, pHashMD5, 16);
 		if (
 			rf_authentication_key(icdev, 0, 1, key) || rf_write(icdev, 1, buffer1) || //步骤+药品编号
@@ -351,7 +359,7 @@ void CDrug::OnBnClickedOk()
 			return;
 		}
 		GetDlgItem(IDC_STATIC23)->SetWindowText("开始写入数据库信息！");
-		sql.Format("insert into Currency values('%s','%s','%d','%s')", m_t->m_main->HID, m_did, m_Ip, s);
+		sql.Format("insert into Currency values('%s','%s','%s','%d','%s')",sn, m_t->m_main->HID, m_did, m_Ip, s);
 		if (pDB->Execute(sql) == TRUE)
 		{
 			AfxMessageBox("数据库写入成功！");
@@ -372,21 +380,27 @@ void CDrug::OnBnClickedOk()
 		if (bn == "读卡")
 		{
 			st = rf_authentication_key(icdev, 0, 1, key);
-			st = rf_read(icdev, 1, c.info);
-			memcpy(buffer1, c.info, 14);
+			st = rf_read(icdev, 1, Info);
+			memcpy(buffer1, Info, 14);
 			buffer1[14] = '\0';
 			m_did = "";
 			m_did = buffer1;
-			step.Format("%c", c.info[14]);
+			step.Format("%c", Info[14]);
 			step.Format("%d", (_ttoi(step) + 1));
 			info = m_did + step;
 			if (buffer1[15] != '\0')
 			{
-				step.Format("%c%c", c.info[14], c.info[15]);
+				step.Format("%c%c", Info[14], Info[15]);
 				step.Format("%d", (_ttoi(step) + 1));
 				info = m_did + step;
 			}
-			memcpy(c.info, info, 16);
+			if ((_ttoi(step) > 16))
+			{
+				AfxMessageBox("记录信息达到上限！");
+				GetDlgItem(IDC_STATIC23)->SetWindowText("记录信息达到上限！");
+				return;
+			}
+			memcpy(Info, info, 16);
 			SetDlgItemTextA(IDOK, "确定");
 			UpdateData(FALSE);
 			OnCbnSelchangeCombo1();
@@ -398,30 +412,30 @@ void CDrug::OnBnClickedOk()
 			return;
 		}
 		st = rf_authentication_key(icdev, 0, 1, key);
-		st = rf_read(icdev, 1, c.info);
-		memcpy(buffer1, c.info, 14);
+		st = rf_read(icdev, 1, Info);
+		memcpy(buffer1, Info, 14);
 		buffer1[14] = '\0';
 		m_did = "";
 		m_did = buffer1;
-		step.Format("%c", c.info[14]);
+		step.Format("%c", Info[14]);
 		step.Format("%d", (_ttoi(step) + 1));
 		info = m_did + step;
 		if (buffer1[15] != '\0')
 		{
-			step.Format("%c%c", c.info[14], c.info[15]);
+			step.Format("%c%c", Info[14], Info[15]);
 			step.Format("%d", (_ttoi(step) + 1));
 			info = m_did + step;
 		}
-		memcpy(c.info, info, 16);
+		memcpy(Info, info, 16);
 		SetDlgItemTextA(IDOK, "确定");
 		OnCbnSelchangeCombo1();
 		memcpy(buffer1, info, 16);
 		memcpy(c.HID, m_d->m_main->HID, 16);
 		CTime t = CTime::GetCurrentTime();
-		CString s = t.Format("%Y-%m-%d");
-		memcpy(c.Time, s, 11);
-		memcpy(buffer2, &c, 44);
-		Dongle_HASH(m_d->m_main->hDongle, FLAG_HASH_MD5, buffer2, 44, pHashMD5);
+		CString s = t.Format("%Y-%m-%d %H:%M");
+		memcpy(c.Time, s, 16);
+		memcpy(buffer2, &c, sizeof(c));
+		Dongle_HASH(m_d->m_main->hDongle, FLAG_HASH_MD5, buffer2, sizeof(c), pHashMD5);
 		memcpy(buffer3, pHashMD5, 16);
 		if (
 			rf_authentication_key(icdev, 0, 1, key) || rf_write(icdev, 1, buffer1) || //步骤+药品编号
@@ -434,7 +448,7 @@ void CDrug::OnBnClickedOk()
 			return;
 		}
 		GetDlgItem(IDC_STATIC23)->SetWindowText("开始写入数据库信息！");
-		sql.Format("insert into Currency values('%s','%s','%d','%s')", m_d->m_main->HID, m_did, m_Ip, s);
+		sql.Format("insert into Currency values('%s','%s','%s','%d','%s')", sn,m_d->m_main->HID, m_did, m_Ip, s);
 		if (pDB->Execute(sql) == TRUE)
 		{
 			AfxMessageBox("数据库写入成功！");

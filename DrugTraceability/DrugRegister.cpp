@@ -114,7 +114,7 @@ void CDrugRegister::OnBnClickedOk()
 	}
 	CString sql,s;
 	CTime t = GetCurrentTime();
-	s = t.Format("%Y-%m-%d");
+	s = t.Format("%Y-%m-%d %H:%M");
 	sql.Format("insert into Drug values('%s','%s','%s','%s','%s','%s',%d);"
 		, DID, DName, Component, Effect, s, Info, Deadline);
 	if (pDB->Execute(sql) != TRUE)

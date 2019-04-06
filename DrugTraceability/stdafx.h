@@ -49,7 +49,7 @@ struct Firm
 	char FirmType[10];   //公司类型  1-药监局 2-生产商 3-中转站 4-药店
 	char Info[200]; //公司简介
 	char Tel[12];//电话
-	char StartTime[11]; //注册日期
+	char StartTime[17]; //注册日期
 	int Deadline; //有效期	
 	
 };
@@ -68,9 +68,9 @@ struct Drug
 */
 struct Currency
 {
-	unsigned char info[16];
+	//unsigned char info[16];
 	unsigned char HID[16];
-	unsigned char Time[11];
+	unsigned char Time[16];
 };
 #ifdef _UNICODE
 #if defined _M_IX86

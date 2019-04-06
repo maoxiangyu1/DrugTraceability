@@ -73,6 +73,9 @@
     <ClInclude Include="mwrf32.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Cardread.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DrugTraceability.cpp">
@@ -112,6 +115,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Drug.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Cardread.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

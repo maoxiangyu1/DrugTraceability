@@ -6,7 +6,8 @@
 #include "Producer.h"
 #include "afxdialogex.h"
 #include "Drug.h"
-
+#include "Cardread.h"
+#include "InfoSearch.h"
 // CProducer 对话框
 
 IMPLEMENT_DYNAMIC(CProducer, CDialogEx)
@@ -44,6 +45,8 @@ void CProducer::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CProducer, CDialogEx)
 	ON_BN_CLICKED(IDDRUGPROD, &CProducer::OnBnClickedDrugprod)
+	ON_BN_CLICKED(IDDICREAD, &CProducer::OnBnClickedDicread)
+	ON_BN_CLICKED(IDDRUGSEARCH, &CProducer::OnBnClickedDrugsearch)
 END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CProducer, CDialogEx)
@@ -70,6 +73,27 @@ void CProducer::OnBnClickedDrugprod()
 	CDrug dlg;
 	dlg.type = 1;
 	dlg.m_p = this;
+	dlg.DoModal();
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CProducer::OnBnClickedDicread()
+{
+	CCardread dlg;
+	dlg.type = 1;
+	dlg.m_p = this;
+	dlg.DoModal();
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CProducer::OnBnClickedDrugsearch()
+{
+	CInfoSearch dlg;
+	dlg.m_p = this;
+	dlg.type = 3;
+	dlg.degree = 1;
 	dlg.DoModal();
 	// TODO: 在此添加控件通知处理程序代码
 }

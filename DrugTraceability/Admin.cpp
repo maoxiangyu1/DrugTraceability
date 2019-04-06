@@ -8,6 +8,7 @@
 #include "FirmRegister.h"
 #include "InfoSearch.h"
 #include "DrugRegister.h"
+#include "Cardread.h"
 // CAdmin 对话框
 
 IMPLEMENT_DYNAMIC(CAdmin, CDialogEx)
@@ -49,6 +50,9 @@ BEGIN_MESSAGE_MAP(CAdmin, CDialogEx)
 	ON_BN_CLICKED(IDSEARCHFIRM, &CAdmin::OnBnClickedSearchfirm)
 	ON_BN_CLICKED(IDSEARCHDRUG, &CAdmin::OnBnClickedSearchdrug)
 	ON_BN_CLICKED(IDCANCEL, &CAdmin::OnBnClickedCancel)
+	ON_BN_CLICKED(IDREADIC, &CAdmin::OnBnClickedReadic)
+	ON_BN_CLICKED(IDDA, &CAdmin::OnBnClickedDa)
+	ON_BN_CLICKED(IDCHANGEKEY, &CAdmin::OnBnClickedChangekey)
 END_MESSAGE_MAP()
 
 BEGIN_DISPATCH_MAP(CAdmin, CDialogEx)
@@ -87,6 +91,7 @@ void CAdmin::OnBnClickedRegsiterfirm()//注册公司
 {
 	CFirmRegister dlg;
 	dlg.m_admin = this;
+	dlg.type = 1;
 	//ShowWindow(SW_HIDE);
 	dlg.DoModal();
 	// TODO: 在此添加控件通知处理程序代码
@@ -123,4 +128,35 @@ void CAdmin::OnBnClickedCancel()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	CDialogEx::OnCancel();
+}
+
+
+void CAdmin::OnBnClickedReadic()
+{
+	CCardread dlg;
+	dlg.type = 0;
+	dlg.m_a = this;
+	dlg.DoModal();
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CAdmin::OnBnClickedDa()
+{
+	CInfoSearch dlg;
+	dlg.type = 3;
+	dlg.degree = 0;
+	dlg.DoModal();
+	// TODO: 在此添加控件通知处理程序代码
+}
+
+
+void CAdmin::OnBnClickedChangekey()
+{
+	CFirmRegister dlg;
+	dlg.m_admin = this;
+	dlg.type = 0;
+	//ShowWindow(SW_HIDE);
+	dlg.DoModal();
+	// TODO: 在此添加控件通知处理程序代码
 }
