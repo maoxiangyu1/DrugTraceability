@@ -182,7 +182,7 @@ BOOL CLogin::OnInitDialog()
 	*/
 	FType = firm.FirmType;
 
-	Info.Format("公司ID：%s\r\n\r\n公司名称：%s\r\n\r\n公司类型：%s\r\n\r\n公司负责人：%s\r\n\r\n公司电话：%s\r\n\r\n公司地址：%s\r\n\r\n公司注册日期：%s\r\n\r\n公司有效期：%d个月\r\n\r\n公司简介：%s"
+	Info.Format("\r\n公司ID：%s\r\n\r\n公司名称：%s\r\n\r\n公司类型：%s\r\n\r\n公司负责人：%s\r\n\r\n公司电话：%s\r\n\r\n公司地址：%s\r\n\r\n公司注册日期：%s\r\n\r\n公司有效期：%d个月\r\n\r\n公司简介：%s"
 			,firm.FirmID, firm.Name,FType,firm.LeaderName,firm.Tel,firm.Address,firm.StartTime,firm.Deadline,firm.Info);
 	GetDlgItem(IDC_STATICW)->SetWindowTextA("读取身份信息成功！");
 	UpdateData(FALSE);            
